@@ -33,7 +33,7 @@ _DEFAULT_LOPT_FN = (
 )
 
 import os
-os.environ['CUDA_VISIBLE_DEVICES']='1'
+os.environ['CUDA_VISIBLE_DEVICES']='0'
 
 class DeviceMappingError(ValueError):
     def __init__(self, msg: Optional[str] = None) -> None:
