@@ -23,6 +23,8 @@ if GpuDevice is not None:
     JAXDevice = Union[Device, GpuDevice]
 else:
     JAXDevice = Device
+    jax.default_backend = 'gpu'
+    jax.default_device = lambda: jax.devices('gpu')[0]
 LossClosure = Union[
     Callable[[], th.Tensor],
     Callable[[], float],
