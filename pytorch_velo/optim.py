@@ -196,6 +196,10 @@ class VeLO(th.optim.Optimizer):
         
         self.state['rng_key'], opt_key = jax.random.split(
             self.state['rng_key'])
+        
+        jax.device_put(opt_key)
+        # jax.device_put(self.state['rng_key'])
+
         self.state['opt_state'] = self.opt.update(
             self.state['opt_state'],
             jax_grad,
