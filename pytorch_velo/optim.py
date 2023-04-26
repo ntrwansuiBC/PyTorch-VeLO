@@ -195,8 +195,6 @@ class VeLO(th.optim.Optimizer):
         jax.device_put(jax_model_state)
         jax.device_put(loss)
         
-        jax_grad.device
-        
         self.state['rng_key'], opt_key = jax.random.split(
             self.state['rng_key'])
         
