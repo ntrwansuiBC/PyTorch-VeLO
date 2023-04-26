@@ -32,6 +32,8 @@ _DEFAULT_LOPT_FN = (
     inspect.signature(LearnedOptimizer).parameters['base_lopt_fn'].default
 )
 
+import os
+os.environ['CUDA_VISIBLE_DEVICES']='1'
 
 class DeviceMappingError(ValueError):
     def __init__(self, msg: Optional[str] = None) -> None:
@@ -185,7 +187,6 @@ class VeLO(th.optim.Optimizer):
             loss = _th_to_jax(loss)
         else:
             loss = jnp.array(0.0)
-            loss.device_buffer.device()
 
         self.state['rng_key'], opt_key = jax.random.split(
             self.state['rng_key'])
