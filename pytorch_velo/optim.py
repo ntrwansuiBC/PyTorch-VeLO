@@ -185,6 +185,7 @@ class VeLO(th.optim.Optimizer):
             loss = _th_to_jax(loss)
         else:
             loss = jnp.array(0.0)
+            jax.device_put(loss)
 
         self.state['rng_key'], opt_key = jax.random.split(
             self.state['rng_key'])
