@@ -172,12 +172,12 @@ class VeLO(th.optim.Optimizer):
                     jax_grad[str(i)].append(None)
                 else:
                     jax_grad[str(i)].append(_th_to_jax(p.grad.ravel()))
-                    
-        if model_state is not None:
+
+        if self.model_state is not None:
             jax_model_state = (
-                _th_to_jax(model_state.ravel())
-                if model_state is not None
-                else model_state
+                _th_to_jax(self.model_state.ravel())
+                if self.model_state is not None
+                else self.model_state
             )
 
         self.state['rng_key'], opt_key = jax.random.split(
