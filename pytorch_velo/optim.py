@@ -163,8 +163,7 @@ class VeLO(th.optim.Optimizer):
         #     str(i): [_th_to_jax(p.grad.ravel()) for p in group['params'] if p.gard is None] 
         #     for (i, group) in enumerate(self.param_groups)
         # }
-        print(self.state)
-        
+
         jax_grad = {}
         for (i, group) in enumerate(self.param_groups):
             jax_grad[str(i)] = []
@@ -173,12 +172,13 @@ class VeLO(th.optim.Optimizer):
                     jax_grad[str(i)].append(None)
                 else:
                     jax_grad[str(i)].append(_th_to_jax(p.grad.ravel()))
-        
-        jax_model_state = (
-            _th_to_jax(model_state.ravel())
-            if model_state is not None
-            else model_state
-        )
+                    
+        if model_state is not None:
+            jax_model_state = (
+                _th_to_jax(model_state.ravel())
+                if model_state is not None
+                else model_state
+            )
 
         self.state['rng_key'], opt_key = jax.random.split(
             self.state['rng_key'])
