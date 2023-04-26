@@ -181,6 +181,9 @@ class VeLO(th.optim.Optimizer):
             else model_state
         )
 
+        if loss is None:
+            loss = 0.0
+
         self.state['rng_key'], opt_key = jax.random.split(
             self.state['rng_key'])
         self.state['opt_state'] = self.opt.update(
