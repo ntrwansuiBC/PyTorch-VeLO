@@ -160,8 +160,7 @@ class VeLO(th.optim.Optimizer):
                     )
 
         jax_grad = {
-            str(i): [_th_to_jax(p.grad.ravel()) for p in group['params'] if p.gard is None]
-            for (i, group) in enumerate(self.param_groups)
+            str(i): [_th_to_jax(p.grad.ravel()) for p in group['params'] if p.gard is None] for (i, group) in enumerate(self.param_groups)
         }
         jax_model_state = (
             _th_to_jax(model_state.ravel())
