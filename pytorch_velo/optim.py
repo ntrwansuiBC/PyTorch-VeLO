@@ -140,22 +140,24 @@ class VeLO(th.optim.Optimizer):
             self,
             closure: LossClosure,
     ) -> Union[th.Tensor, float, None]:
-        with th.enable_grad():
-            closure_result = closure()
-            if isinstance(closure_result, tuple):
-                assert len(closure_result) == 2, (
-                    'closure must return a 2-tuple if not returning a scalar'
-                )
-                loss, model_state = closure_result
-            elif isinstance(closure_result, th.Tensor):
-                loss = closure_result
-                assert loss.numel() == 1, 'loss must be a scalar'
-                model_state = None
-            else:
-                raise TypeError(
-                    'closure returned type that is not handled: '
-                    + str(type(closure_result))
-                )
+        loss = None
+        if closure is not None:
+            with th.enable_grad():
+                closure_result = closure()
+                if isinstance(closure_result, tuple):
+                    assert len(closure_result) == 2, (
+                        'closure must return a 2-tuple if not returning a scalar'
+                    )
+                    loss, model_state = closure_result
+                elif isinstance(closure_result, th.Tensor):
+                    loss = closure_result
+                    assert loss.numel() == 1, 'loss must be a scalar'
+                    model_state = None
+                else:
+                    raise TypeError(
+                        'closure returned type that is not handled: '
+                        + str(type(closure_result))
+                    )
 
         jax_grad = {
             str(i): [_th_to_jax(p.grad.ravel()) for p in group['params']]
