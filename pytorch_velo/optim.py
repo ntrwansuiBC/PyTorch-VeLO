@@ -184,7 +184,7 @@ class VeLO(th.optim.Optimizer):
         if loss is not None:
             loss = _th_to_jax(loss)
         else:
-            loss = jax.random.PRNGKey(0)
+            loss = jnp.array(0.0)
 
         self.state['rng_key'], opt_key = jax.random.split(
             self.state['rng_key'])
@@ -192,7 +192,7 @@ class VeLO(th.optim.Optimizer):
             self.state['opt_state'],
             jax_grad,
             model_state=jax_model_state,
-            loss=_th_to_jax(loss),
+            loss=loss,
             key=opt_key,
         )
 
